@@ -46,7 +46,7 @@ EOF
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'
 {
-"registry-mirrors": ["http://hub-mirror.c.163.com"]
+"registry-mirrors": ["https://ryb0h6jn.mirror.aliyuncs.com"]
 }
 EOF
 ```

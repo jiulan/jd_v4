@@ -67,36 +67,36 @@ sudo docker pull  nevinee/jd:v4
 # e大v4部署
 
 ```
-docker run -dit \
--v /jd/config:/jd/config \
--v /jd/log:/jd/log \
--v /jd/scripts:/jd/scripts \
--v /jd/own:/jd/own \
--p 5678:5678 \
--e ENABLE_HANGUP=true \
--e ENABLE_WEB_PANEL=true \
--e ENABLE_WEB_TTYD=true \
---name jd \
---hostname jd \
---restart always \
+docker run -dit 
+-v /jd/config:/jd/config 
+-v /jd/log:/jd/log 
+-v /jd/scripts:/jd/scripts 
+-v /jd/own:/jd/own 
+-p 5678:5678 
+-e ENABLE_HANGUP=true 
+-e ENABLE_WEB_PANEL=true 
+-e ENABLE_WEB_TTYD=true 
+--name jd 
+--hostname jd 
+--restart always 
 nevinee/jd:v4
 ```
 ## 多容器配置 - 安装过shuye等占用jd容器名或者调整目录使用
 #要想换库直接改最后一行
 
 ```
-docker run -dit \
--v /你想保存的目录/jd1/config:/jd/config `# 配置保存目录，冒号左边请修改为你想存放的路径`\
--v /你想保存的目录/jd1/log:/jd/log `# 日志保存目录，冒号左边请修改为你想存放的路径` \
--v /你想保存的目录/jd1/scripts:/jd/scripts `# 脚本文件目录，映射脚本文件到安装路径` \
--v /jd/own:/jd/own \
--p 5679:5678 \
--e ENABLE_HANGUP=true \
--e ENABLE_WEB_PANEL=true \
--e ENABLE_WEB_TTYD=true \
---name jd1 \
---hostname jd1 \
---restart always \
+docker run -dit 
+-v /你想保存的目录/jd1/config:/jd/config `# 配置保存目录，冒号左边请修改为你想存放的路径`
+-v /你想保存的目录/jd1/log:/jd/log `# 日志保存目录，冒号左边请修改为你想存放的路径` 
+-v /你想保存的目录/jd1/scripts:/jd/scripts `# 脚本文件目录，映射脚本文件到安装路径` 
+-v /jd/own:/jd/own 
+-p 5679:5678 
+-e ENABLE_HANGUP=true 
+-e ENABLE_WEB_PANEL=true 
+-e ENABLE_WEB_TTYD=true 
+--name jd1 
+--hostname jd1 
+--restart always 
 nevinee/jd:v4
 ```
 

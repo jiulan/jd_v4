@@ -125,6 +125,12 @@ npm i
 
 pm2 start server.js
 ```
+#特殊需要添加    替换server.js 添加update_cookie 函数
+
+```
+wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/server.js -O /jd/panel/server.js
+```
+
 
 #页面访问
 

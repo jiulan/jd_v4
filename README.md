@@ -111,7 +111,7 @@ docker exec -it jd1 bash jup
 #开启DIY每次重启会重启面板
 #先进入容器
 ```
-docker exec -it jd3 bash
+docker exec -it jd1 bash
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/jup.sh -O /jd/jup.sh
 wget https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/update_ck_number.sh
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/v4mb.sh -O v4mb.sh && chmod +x v4mb.sh && ./v4mb.sh

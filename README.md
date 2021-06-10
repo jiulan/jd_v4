@@ -112,7 +112,7 @@ docker exec -it jd1 bash jup
 #先进入容器
 ```
 docker exec -it jd1 bash
-
+wget https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/update_ck_number.sh
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/v4mb.sh -O v4mb.sh && chmod +x v4mb.sh && ./v4mb.sh
 ```
 #重启手动运行面板

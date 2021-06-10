@@ -125,9 +125,12 @@ npm i
 
 pm2 start server.js
 ```
-#特殊需要添加    替换server.js 添加update_cookie 函数
+
+# -------------------------说明--------------------
+#特殊需要才添加    替换server.js 添加update_cookie 函数
 
 ```
+docker exec -it jd1 bash
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/server.js -O /jd/panel/server.js
 ```
 

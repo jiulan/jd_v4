@@ -41,7 +41,7 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 }
 EOF
 ```
-# 阿里云服务器 用网易的加速器
+# 阿里云服务器 
 ```
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'

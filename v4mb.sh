@@ -1,4 +1,4 @@
-wget https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4_old/main/v4mb.tar.gz
+wget https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/v4mb.tar.gz
 tar -zxvf v4mb.tar.gz
 rm -f v4mb.tar.gz
 mv v4mb/panel panel

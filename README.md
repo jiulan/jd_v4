@@ -68,17 +68,17 @@ sudo docker pull  nevinee/jd:v4
 
 ```
 docker run -dit 
--v /jd/config:/jd/config 
--v /jd/log:/jd/log 
--v /jd/scripts:/jd/scripts 
--v /jd/own:/jd/own 
--p 5678:5678 
--e ENABLE_HANGUP=true 
--e ENABLE_WEB_PANEL=true 
--e ENABLE_WEB_TTYD=true 
---name jd 
---hostname jd 
---restart always 
+-v /jd/config:/jd/config \
+-v /jd/log:/jd/log \
+-v /jd/scripts:/jd/scripts \
+-v /jd/own:/jd/own \
+-p 5678:5678 \
+-e ENABLE_HANGUP=true \
+-e ENABLE_WEB_PANEL=true \
+-e ENABLE_WEB_TTYD=true \
+--name jd \
+--hostname jd \
+--restart always \
 nevinee/jd:v4
 ```
 ## 多容器配置 - 安装过shuye等占用jd容器名或者调整目录使用
@@ -86,17 +86,17 @@ nevinee/jd:v4
 
 ```
 docker run -dit 
--v /你想保存的目录/jd1/config:/jd/config `# 配置保存目录，冒号左边请修改为你想存放的路径`
--v /你想保存的目录/jd1/log:/jd/log `# 日志保存目录，冒号左边请修改为你想存放的路径` 
--v /你想保存的目录/jd1/scripts:/jd/scripts `# 脚本文件目录，映射脚本文件到安装路径` 
--v /jd/own:/jd/own 
--p 5679:5678 
--e ENABLE_HANGUP=true 
--e ENABLE_WEB_PANEL=true 
--e ENABLE_WEB_TTYD=true 
---name jd1 
---hostname jd1 
---restart always 
+-v /你想保存的目录/jd1/config:/jd/config ` \ # 配置保存目录，冒号左边请修改为你想存放的路径`
+-v /你想保存的目录/jd1/log:/jd/log `  \ # 日志保存目录，冒号左边请修改为你想存放的路径` 
+-v /你想保存的目录/jd1/scripts:/jd/scripts  \ `# 脚本文件目录，映射脚本文件到安装路径` 
+-v /jd/own:/jd/own  \ 
+-p 5679:5678  \ 
+-e ENABLE_HANGUP=true  \ 
+-e ENABLE_WEB_PANEL=true  \ 
+-e ENABLE_WEB_TTYD=true  \ 
+--name jd1  \ 
+--hostname jd1  \ 
+--restart always  \ 
 nevinee/jd:v4
 ```
 
@@ -112,9 +112,9 @@ docker exec -it jd1 bash jup
 #先进入容器
 ```
 docker exec -it jd1 bash
-wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4_old/main/jup.sh -O /jd/jup.sh
-wget https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4_old/main/update_ck_number.sh
-wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4_old/main/v4mb.sh -O v4mb.sh && chmod +x v4mb.sh && ./v4mb.sh
+wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/jup.sh -O /jd/jup.sh
+wget https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/update_ck_number.sh
+wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/v4mb.sh -O v4mb.sh && chmod +x v4mb.sh && ./v4mb.sh
 ```
 #重启手动运行面板
 #先进入容器
@@ -132,7 +132,7 @@ pm2 start server.js
 
 ```
 docker exec -it jd1 bash
-wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4_old/main/server.js -O /jd/panel/server.js
+wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/server.js -O /jd/panel/server.js
 ```
 
 

@@ -128,7 +128,7 @@ pm2 start server.js
 ```
 
 # -------------------------说明--------------------
-#特殊需要才添加    替换server.js 添加update_cookie 函数
+#特殊需要才添加    替换server.js 添加update_cookie 函数、解决无法扫码获取ck、屏蔽shell接口
 
 ```
 docker exec -it jd1 bash

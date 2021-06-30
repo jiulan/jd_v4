@@ -81,7 +81,7 @@ docker run -dit \
 --restart always \
 nevinee/jd:v4
 ```
-## 多容器配置 - 安装过shuye等占用jd容器名或者调整目录使用
+## 多容器配置 - 安装过shuye等占用jd容器名或者调整目录使用-使用lxk库（已清库）
 #要想换库直接改最后一行
 
 ```
@@ -94,27 +94,51 @@ docker run -dit \
 -e ENABLE_HANGUP=true \
 -e ENABLE_WEB_PANEL=true \
 -e ENABLE_WEB_TTYD=true \
---name jd1 \
---hostname jd1 \
+--name 容器名 \
+--hostname 容器名 \
+--restart always \
+nevinee/jd:v4
+
+```
+## 多容器配置 - lxk备份库拉取
+#要想换库直接改最后一行
+
+```
+docker run -dit \
+-v /你想保存的目录/config:/jd/config \
+-v /你想保存的目录/log:/jd/log \
+-v /你想保存的目录/scripts:/jd/scripts \
+-v /jd/own:/jd/own \
+-p 5679:5678 \
+-e ENABLE_HANGUP=true \
+-e ENABLE_WEB_PANEL=true \
+-e ENABLE_WEB_TTYD=true \
+-e REPO_URL=https://gitee.com/jiulan0229/lxk_scripts.git \
+-e JD_SCRIPTS_URL=https://gitee.com/jiulan0229/lxk_scripts.git \
+-e JD_SCRIPTS_BRANCH="master" \
+--name 容器名 \
+--hostname 容器名 \
 --restart always \
 nevinee/jd:v4
 
 ```
 
-##自动更新Docker容器（也就是更新京东文件）
-
 
 #v4更新命令
 ```
 docker exec -it jd1 bash jup
-```
+``` 
+
+
 ##安装v4面板
 #开启DIY每次重启会重启面板
 #先进入容器
 ```
 docker exec -it jd1 bash
-wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/jup.sh -O /jd/jup.sh
-wget https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/update_ck_number.sh
+```
+
+#拉取面板文件
+```
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/v4mb.sh -O v4mb.sh && chmod +x v4mb.sh && ./v4mb.sh
 ```
 #重启手动运行面板
@@ -129,11 +153,16 @@ pm2 start server.js
 ```
 
 # -------------------------说明--------------------
-#特殊需要才添加    替换server.js 添加update_cookie 函数、解决无法扫码获取ck、屏蔽shell接口
+#特殊需要才添加     容器内调用
 
+#替换server.js 添加update_cookie 函数、解决无法扫码获取ck、屏蔽shell接口
 ```
-docker exec -it jd1 bash
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/server.js -O /jd/panel/server.js
+```
+
+#屏蔽拉取lxk库
+```
+wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/jup.sh -O /jd/jup.sh
 ```
 
 

@@ -82,7 +82,6 @@ docker run -dit \
 nevinee/jd:v4
 ```
 ## 多容器配置 - 安装过shuye等占用jd容器名或者调整目录使用-使用lxk库（已清库）
-#要想换库直接改最后一行
 
 ```
 docker run -dit \
@@ -100,8 +99,7 @@ docker run -dit \
 nevinee/jd:v4
 
 ```
-## 多容器配置 - lxk备份库拉取
-#要想换库直接改最后一行
+## 多容器配置 - lxk备份库拉取(自用拉取慎重)
 
 ```
 docker run -dit \
@@ -124,14 +122,14 @@ nevinee/jd:v4
 ```
 
 
-#v4更新命令
+##v4更新命令
 ```
 docker exec -it jd1 bash jup
 ``` 
 
 
 ##安装v4面板
-#开启DIY每次重启会重启面板
+-- 开启DIY每次重启会重启面板
 #先进入容器
 ```
 docker exec -it jd1 bash

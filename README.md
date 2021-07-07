@@ -165,6 +165,8 @@ wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/
 #V4 运行ck限制调整
 
 - [食用方法](./update_ck_number.md)
+# 获取京东cookie：
+  + [支持扫码、口令、直接登录](http://jd.lianggenming.link)
 
 #页面访问
 

@@ -162,7 +162,9 @@ wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/
 ```
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/jup.sh -O /jd/jup.sh
 ```
+#V4 运行ck限制调整
 
+- [食用方法](./update_ck_number.md)
 
 #页面访问
 

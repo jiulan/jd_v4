@@ -151,22 +151,24 @@ pm2 start server.js
 ```
 
 #  -------------------------说明--------------------
-# 特殊需要才添加     容器内调用
+#  特殊需要才添加     容器内调用
 
-# 替换server.js 添加update_cookie 函数、解决无法扫码获取ck、屏蔽shell接口
++  替换server.js 添加update_cookie 函数、解决无法扫码获取ck、屏蔽shell接口
 ```
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/server.js -O /jd/panel/server.js
 ```
 
-# 屏蔽拉取lxk库
++  屏蔽拉取lxk库
 ```
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/jup.sh -O /jd/jup.sh
 ```
-# V4 运行ck限制调整
 
-- [食用方法](./update_ck_number.md)
-# 获取京东cookie：
-  + [支持扫码、口令、直接登录](http://jd.lianggenming.link)
++  V4 运行ck限制调整
+
+   [食用方法](./update_ck_number.md)
+
++  获取京东cookie：
+   [支持扫码、口令、直接登录](http://jd.lianggenming.link)
 
 # 页面访问
 

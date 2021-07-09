@@ -177,3 +177,7 @@ wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/
 -p A:A 内外同端口
 
 -p B:A 异端口
+
+# 联系方式
+[call](https://t.me/jiulan0111)
+

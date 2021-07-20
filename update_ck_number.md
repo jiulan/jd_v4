@@ -16,7 +16,7 @@ step:3
 - 自定义脚本添加执行修改脚本
 
 ```
-sh /jd/update_ck_number.sh
+sh update_ck_number.sh
 ```
 
    

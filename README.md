@@ -1,3 +1,8 @@
+##有问题反馈
+在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
+
+* TG群: [@platypus](https://t.me/jiulan_platypus)
+
 # jd_v4
 
 ###CentOS 安装 docker

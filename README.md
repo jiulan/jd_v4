@@ -64,12 +64,14 @@ sudo service docker restart
 sudo yum remove docker docker-common docker-selinux docker-engine
 ```
 ## 安装过docker 忽略--------------------------↑↑↑↑↑↑↑↑↑↑↑↑↑↑-------------------------
+## Docker 部署京东脚本
+# e大v4部署
+
 ```
 sudo docker pull  nevinee/jd:v4
 ```
+# nevinee/jd:v4 拉取不到可以替换备用镜像 jiulan/jd:test
 
-## Docker 部署京东脚本
-# e大v4部署
 
 ```
 docker run -dit \

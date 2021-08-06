@@ -71,8 +71,9 @@ sudo yum remove docker docker-common docker-selinux docker-engine
 sudo docker pull  nevinee/jd:v4
 ```
 # nevinee/jd:v4 拉取不到可以替换备用镜像 
-#TAG test 为nevinee/jd:v4 导出 jiulan/jd:test
-#TAG v4重新打包 添加内置库 jiulan/jd:v4
+
+- TAG test 为nevinee/jd:v4 导出 jiulan/jd:test
+- TAG v4重新打包 添加内置库 jiulan/jd:v4
 
 ```
 docker run -dit \

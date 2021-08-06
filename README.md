@@ -70,8 +70,9 @@ sudo yum remove docker docker-common docker-selinux docker-engine
 ```
 sudo docker pull  nevinee/jd:v4
 ```
-# nevinee/jd:v4 拉取不到可以替换备用镜像 jiulan/jd:test
-
+# nevinee/jd:v4 拉取不到可以替换备用镜像 
+#TAG test 为nevinee/jd:v4 导出 jiulan/jd:test
+#TAG v4重新打包 添加内置库 jiulan/jd:v4
 
 ```
 docker run -dit \
@@ -106,19 +107,19 @@ docker run -dit \
 nevinee/jd:v4
 
 ```
-## 多容器配置 - lxk备份库拉取(自用拉取慎重)
+## 多容器配置 - 更换默认库
 
 ```
 docker run -dit \
--v /你想保存的目录/config:/jd/config \
--v /你想保存的目录/log:/jd/log \
--v /你想保存的目录/scripts:/jd/scripts \
+-v /jd/config:/jd/config \
+-v /jd/log:/jd/log \
+-v /jd/scripts:/jd/scripts \
 -v /jd/own:/jd/own \
 -p 5679:5678 \
 -e ENABLE_HANGUP=true \
 -e ENABLE_WEB_PANEL=true \
 -e ENABLE_WEB_TTYD=true \
--e REPO_URL=https://gitee.com/jiulan0229/lxk_scripts.git \
+-e REPO_URL=gitee \
 -e JD_SCRIPTS_URL=https://gitee.com/jiulan0229/lxk_scripts.git \
 -e JD_SCRIPTS_BRANCH="master" \
 --name 容器名 \
@@ -127,9 +128,27 @@ docker run -dit \
 nevinee/jd:v4
 
 ```
+## 使用jiulan改动版v4  （去除ck限制、添加jiulan内置脚本库）
+
+```
+docker run -dit \
+-v /jd/config:/jd/config \
+-v /jd/log:/jd/log \
+-v /jd/scripts:/jd/scripts \
+-v /jd/own:/jd/own \
+-p 5679:5678 \
+-e ENABLE_HANGUP=true \
+-e ENABLE_WEB_PANEL=true \
+-e ENABLE_WEB_TTYD=true \
+--name 容器名 \
+--hostname 容器名 \
+--restart always \
+jiulan/jd:v4
+
+```
 
 
-## v4更新命令
+## v4更新脚本命令
 ```
 docker exec -it jd1 bash jup
 ``` 

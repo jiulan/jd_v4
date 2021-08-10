@@ -180,12 +180,12 @@ pm2 start server.js
 #  -------------------------说明--------------------
 #  特殊需要才添加     容器内调用
 
-+  替换server.js 添加update_cookie 函数（只更新存在ck）、解决无法扫码获取ck、屏蔽shell接口
++  替换server.js 添加update_cookie 函数（`只更新存在ck`）、解决无法扫码获取ck、屏蔽shell接口
 ```
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/server.js -O /jd/panel/server.js
 ```
 
-+  替换server.js 添加update_cookie 函数(存在就更新，不存在新增)、解决无法扫码获取ck、屏蔽shell接口
++  替换server.js 添加update_cookie 函数(`存在就更新，不存在新增`)、解决无法扫码获取ck、屏蔽shell接口
 ```
 wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/server_by_save.js -O /jd/panel/server.js
 ```

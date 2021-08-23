@@ -1,3 +1,4 @@
+
 /*
  * @Author: Jerrykuku https://github.com/jerrykuku
  * @Date: 2021-1-8
@@ -14,17 +15,15 @@ var path = require('path');
 var fs = require('fs');
 var { execSync, exec } = require('child_process');
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const JD_UA = `Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 SP-engine/2.14.0 main%2F1.0 baiduboxapp/11.18.0.16 (Baidu; P2 13.3.1) NABar/0.0`;
 
-var rootPath = path.resolve(__dirname, '/jd/');
+
+var rootPath = path.resolve(__dirname, '..')
 // config.sh 文件所在目录
 var confFile = path.join(rootPath, 'config/config.sh');
 // config.sample.sh 文件所在目录
 var sampleFile = path.join(rootPath, 'sample/config.sample.sh');
 // crontab.list 文件所在目录
 var crontabFile = path.join(rootPath, 'config/crontab.list');
-// bot.json 文件所在目录
-var botFile = path.join(rootPath, 'config/bot.json');
 // config.sh 文件备份目录
 var confBakDir = path.join(rootPath, 'config/bak/');
 // auth.json 文件目录
@@ -37,170 +36,109 @@ var diyFile = path.join(rootPath, 'config/diy.sh');
 var logPath = path.join(rootPath, 'log/');
 // 脚本目录
 var ScriptsPath = path.join(rootPath, 'scripts/');
+//解决扫码
+var userAgent = `Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 SP-engine/2.14.0 main%2F1.0 baiduboxapp/11.18.0.16 (Baidu; P2 13.3.1) NABar/0.0`;
 
-var authError = '错误的用户名密码，请重试';
-var loginFaild = '请先登录!';
 
-var configString = 'config sample crontab shareCode diy bot';
+var authError = "错误的用户名密码，请重试";
+var loginFaild = "请先登录!";
 
-var s_token,
-  cookies,
-  guid,
-  lsid,
-  lstoken,
-  okl_token,
-  token,
-  userCookie = '';
+var configString = "config sample crontab shareCode diy";
 
-/**
- * 随机iPhoneID
- * @param {number} [length=6]
- * @return {*}
- */
-function randPhoneId() {
-  return Math.random().toString(36).slice(2, 10) +
-      Math.random().toString(36).slice(2, 10) +
-      Math.random().toString(36).slice(2, 10) +
-      Math.random().toString(36).slice(2, 10) +
-      Math.random().toString(36).slice(2, 10);
-}
+var s_token, cookies, guid, lsid, lstoken, okl_token, token, userCookie = ""
 
 function praseSetCookies(response) {
-  s_token = response.body.s_token;
-  guid = response.headers['set-cookie'][0];
-  guid = guid.substring(guid.indexOf('=') + 1, guid.indexOf(';'));
-  lsid = response.headers['set-cookie'][2];
-  lsid = lsid.substring(lsid.indexOf('=') + 1, lsid.indexOf(';'));
-  lstoken = response.headers['set-cookie'][3];
-  lstoken = lstoken.substring(lstoken.indexOf('=') + 1, lstoken.indexOf(';'));
-  cookies =
-    'guid=' + guid + '; lang=chs; lsid=' + lsid + '; lstoken=' + lstoken + '; ';
+  s_token = response.body.s_token
+  guid = response.headers['set-cookie'][0]
+  guid = guid.substring(guid.indexOf("=") + 1, guid.indexOf(";"))
+  lsid = response.headers['set-cookie'][2]
+  lsid = lsid.substring(lsid.indexOf("=") + 1, lsid.indexOf(";"))
+  lstoken = response.headers['set-cookie'][3]
+  lstoken = lstoken.substring(lstoken.indexOf("=") + 1, lstoken.indexOf(";"))
+  cookies = "guid=" + guid + "; lang=chs; lsid=" + lsid + "; lstoken=" + lstoken + "; "
 }
 
 function getCookie(response) {
-  var TrackerID = response.headers['set-cookie'][0];
-  TrackerID = TrackerID.substring(
-    TrackerID.indexOf('=') + 1,
-    TrackerID.indexOf(';')
-  );
-  var pt_key = response.headers['set-cookie'][1];
-  pt_key = pt_key.substring(pt_key.indexOf('=') + 1, pt_key.indexOf(';'));
-  var pt_pin = response.headers['set-cookie'][2];
-  pt_pin = pt_pin.substring(pt_pin.indexOf('=') + 1, pt_pin.indexOf(';'));
-  var pt_token = response.headers['set-cookie'][3];
-  pt_token = pt_token.substring(
-    pt_token.indexOf('=') + 1,
-    pt_token.indexOf(';')
-  );
-  var pwdt_id = response.headers['set-cookie'][4];
-  pwdt_id = pwdt_id.substring(pwdt_id.indexOf('=') + 1, pwdt_id.indexOf(';'));
-  var s_key = response.headers['set-cookie'][5];
-  s_key = s_key.substring(s_key.indexOf('=') + 1, s_key.indexOf(';'));
-  var s_pin = response.headers['set-cookie'][6];
-  s_pin = s_pin.substring(s_pin.indexOf('=') + 1, s_pin.indexOf(';'));
-  cookies =
-    'TrackerID=' +
-    TrackerID +
-    '; pt_key=' +
-    pt_key +
-    '; pt_pin=' +
-    pt_pin +
-    '; pt_token=' +
-    pt_token +
-    '; pwdt_id=' +
-    pwdt_id +
-    '; s_key=' +
-    s_key +
-    '; s_pin=' +
-    s_pin +
-    '; wq_skey=';
-  var userCookie = 'pt_key=' + pt_key + ';pt_pin=' + pt_pin + ';';
-  console.log('\n############  登录成功，获取到 Cookie  #############\n\n');
+  var TrackerID = response.headers['set-cookie'][0]
+  TrackerID = TrackerID.substring(TrackerID.indexOf("=") + 1, TrackerID.indexOf(";"))
+  var pt_key = response.headers['set-cookie'][1]
+  pt_key = pt_key.substring(pt_key.indexOf("=") + 1, pt_key.indexOf(";"))
+  var pt_pin = response.headers['set-cookie'][2]
+  pt_pin = pt_pin.substring(pt_pin.indexOf("=") + 1, pt_pin.indexOf(";"))
+  var pt_token = response.headers['set-cookie'][3]
+  pt_token = pt_token.substring(pt_token.indexOf("=") + 1, pt_token.indexOf(";"))
+  var pwdt_id = response.headers['set-cookie'][4]
+  pwdt_id = pwdt_id.substring(pwdt_id.indexOf("=") + 1, pwdt_id.indexOf(";"))
+  var s_key = response.headers['set-cookie'][5]
+  s_key = s_key.substring(s_key.indexOf("=") + 1, s_key.indexOf(";"))
+  var s_pin = response.headers['set-cookie'][6]
+  s_pin = s_pin.substring(s_pin.indexOf("=") + 1, s_pin.indexOf(";"))
+  cookies = "TrackerID=" + TrackerID + "; pt_key=" + pt_key + "; pt_pin=" + pt_pin + "; pt_token=" + pt_token + "; pwdt_id=" + pwdt_id + "; s_key=" + s_key + "; s_pin=" + s_pin + "; wq_skey="
+  var userCookie = "pt_key=" + pt_key + ";pt_pin=" + pt_pin + ";";
+  console.log("\n############  登录成功，获取到 Cookie  #############\n\n");
   console.log('Cookie1="' + userCookie + '"\n');
-  console.log('\n####################################################\n\n');
+  console.log("\n####################################################\n\n");
   return userCookie;
 }
 
 async function step1() {
   try {
-    s_token, cookies, guid, lsid, lstoken, okl_token, (token = '');
-    let timeStamp = new Date().getTime();
-    let url =
-      'https://plogin.m.jd.com/cgi-bin/mm/new_login_entrance?lang=chs&appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=' +
-      timeStamp +
-      '&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport';
+    s_token, cookies, guid, lsid, lstoken, okl_token, token = ""
+    let timeStamp = (new Date()).getTime()
+    let url = 'https://plogin.m.jd.com/cgi-bin/mm/new_login_entrance?lang=chs&appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=' + timeStamp + '&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport'
     const response = await got(url, {
       responseType: 'json',
       headers: {
-        Connection: 'Keep-Alive',
+        'Connection': 'Keep-Alive',
         'Content-Type': 'application/x-www-form-urlencoded',
-        Accept: 'application/json, text/plain, */*',
+        'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'zh-cn',
-        Referer:
-          'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=' +
-          timeStamp +
-          '&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
+        'Referer': 'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=' + timeStamp + '&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
         'User-Agent': 'jdapp;android;10.0.2;10;network/wifi;Mozilla/5.0 (Linux; Android 10; ONEPLUS A5010 Build/QKQ1.191014.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045230 Mobile Safari/537.36P',
-        Host: 'plogin.m.jd.com',
-      },
+        'Host': 'plogin.m.jd.com'
+      }
     });
 
-    praseSetCookies(response);
+    praseSetCookies(response)
   } catch (error) {
-    cookies = '';
+    cookies = "";
     console.log(error.response.body);
   }
-}
+};
 
 async function step2() {
   try {
-    if (cookies == '') {
-      return 0;
+    if (cookies == "") {
+      return 0
     }
-    let timeStamp = new Date().getTime();
-    let url =
-      'https://plogin.m.jd.com/cgi-bin/m/tmauthreflogurl?s_token=' +
-      s_token +
-      '&v=' +
-      timeStamp +
-      '&remember=true';
+    let timeStamp = (new Date()).getTime()
+    let url = 'https://plogin.m.jd.com/cgi-bin/m/tmauthreflogurl?s_token=' + s_token + '&v=' + timeStamp + '&remember=true'
     const response = await got.post(url, {
       responseType: 'json',
       json: {
-        lang: 'chs',
-        appid: 300,
-        returnurl:
-          'https://wqlogin2.jd.com/passport/LoginRedirect?state=' +
-          timeStamp +
-          '&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action',
-        source: 'wq_passport',
+        'lang': 'chs',
+        'appid': 300,
+        'returnurl': 'https://wqlogin2.jd.com/passport/LoginRedirect?state=' + timeStamp + '&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action',
+        'source': 'wq_passport'
       },
       headers: {
-        Connection: 'Keep-Alive',
+        'Connection': 'Keep-Alive',
         'Content-Type': 'application/x-www-form-urlencoded; Charset=UTF-8',
-        Accept: 'application/json, text/plain, */*',
-        Cookie: cookies,
-        Referer:
-          'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=' +
-          timeStamp +
-          '&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
+        'Accept': 'application/json, text/plain, */*',
+        'Cookie': cookies,
+        'Referer': 'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=' + timeStamp + '&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
         'User-Agent': 'jdapp;android;10.0.2;10;network/wifi;Mozilla/5.0 (Linux; Android 10; ONEPLUS A5010 Build/QKQ1.191014.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045230 Mobile Safari/537.36P',
-        Host: 'plogin.m.jd.com',
-      },
+        'Host': 'plogin.m.jd.com',
+      }
     });
-    token = response.body.token;
-    okl_token = response.headers['set-cookie'][0];
-    okl_token = okl_token.substring(
-      okl_token.indexOf('=') + 1,
-      okl_token.indexOf(';')
-    );
-    var qrUrl =
-      'https://plogin.m.jd.com/cgi-bin/m/tmauth?appid=300&client_type=m&token=' +
-      token;
+    token = response.body.token
+    okl_token = response.headers['set-cookie'][0]
+    okl_token = okl_token.substring(okl_token.indexOf("=") + 1, okl_token.indexOf(";"))
+    var qrUrl = 'https://plogin.m.jd.com/cgi-bin/m/tmauth?appid=300&client_type=m&token=' + token;
     return qrUrl;
   } catch (error) {
     console.log(error.response.body);
-    return 0;
+    return 0
   }
 }
 
@@ -208,53 +146,46 @@ var i = 0;
 
 async function checkLogin() {
   try {
-    if (cookies == '') {
-      return 0;
+    if (cookies == "") {
+      return 0
     }
-    let timeStamp = new Date().getTime();
-    let url =
-      'https://plogin.m.jd.com/cgi-bin/m/tmauthchecktoken?&token=' +
-      token +
-      '&ou_state=0&okl_token=' +
-      okl_token;
+    let timeStamp = (new Date()).getTime()
+    let url = 'https://plogin.m.jd.com/cgi-bin/m/tmauthchecktoken?&token=' + token + '&ou_state=0&okl_token=' + okl_token;
     const response = await got.post(url, {
       responseType: 'json',
       form: {
         lang: 'chs',
         appid: 300,
-        returnurl:
-          'https://wqlogin2.jd.com/passport/LoginRedirect?state=1100399130787&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action',
-        source: 'wq_passport',
+        returnurl: 'https://wqlogin2.jd.com/passport/LoginRedirect?state=1100399130787&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action',
+        source: 'wq_passport'
       },
       headers: {
-        Referer:
-          'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=' +
-          timeStamp +
-          '&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
-        Cookie: cookies,
-        Connection: 'Keep-Alive',
+        'Referer': 'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=' + timeStamp + '&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport',
+        'Cookie': cookies,
+        'Connection': 'Keep-Alive',
         'Content-Type': 'application/x-www-form-urlencoded; Charset=UTF-8',
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': JD_UA,
-      },
+        'Accept': 'application/json, text/plain, */*',
+        'User-Agent': userAgent,
+      }
     });
 
     return response;
   } catch (error) {
     console.log(error.response.body);
-    let res = {};
-    res.body = { check_ip: 0, errcode: 222, message: '出错' };
-    res.headers = {};
+    let res = {}
+    res.body = { check_ip: 0, errcode: 222, message: '出错' }
+    res.headers = {}
     return res;
   }
 }
+
+
 
 /**
  * 检查 config.sh 以及 config.sample.sh 文件是否存在
  */
 function checkConfigFile() {
   if (!fs.existsSync(confFile)) {
-    console.error(rootPath);
     console.error('脚本启动失败，config.sh 文件不存在！');
     process.exit(1);
   }
@@ -279,42 +210,25 @@ function mkdirConfigBakDir() {
 function bakConfFile(file) {
   mkdirConfigBakDir();
   let date = new Date();
-  let bakConfFile =
-    confBakDir +
-    file +
-    '_' +
-    date.getFullYear() +
-    '-' +
-    date.getMonth() +
-    '-' +
-    date.getDay() +
-    '-' +
-    date.getHours() +
-    '-' +
-    date.getMinutes() +
-    '-' +
-    date.getMilliseconds();
-  let oldConfContent = '';
+  let bakConfFile = confBakDir + file + '_' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getMilliseconds();
+  let oldConfContent = "";
   switch (file) {
-    case 'config.sh':
+    case "config.sh":
       oldConfContent = getFileContentByName(confFile);
       fs.writeFileSync(bakConfFile, oldConfContent);
       break;
-    case 'crontab.list':
+    case "crontab.list":
       oldConfContent = getFileContentByName(crontabFile);
       fs.writeFileSync(bakConfFile, oldConfContent);
       break;
-    case 'diy.sh':
+    case "diy.sh":
       oldConfContent = getFileContentByName(diyFile);
-      fs.writeFileSync(bakConfFile, oldConfContent);
-      break;
-    case 'bot.json':
-      oldConfContent = getFileContentByName(botFile);
       fs.writeFileSync(bakConfFile, oldConfContent);
       break;
     default:
       break;
   }
+
 }
 
 /**
@@ -324,18 +238,15 @@ function bakConfFile(file) {
 function saveNewConf(file, content) {
   bakConfFile(file);
   switch (file) {
-    case 'config.sh':
+    case "config.sh":
       fs.writeFileSync(confFile, content);
       break;
-    case 'crontab.list':
+    case "crontab.list":
       fs.writeFileSync(crontabFile, content);
       execSync('crontab ' + crontabFile);
       break;
-    case 'diy.sh':
+    case "diy.sh":
       fs.writeFileSync(diyFile, content);
-      break;
-    case 'bot.json':
-      fs.writeFileSync(botFile, content);
       break;
     default:
       break;
@@ -380,6 +291,7 @@ function getLastModifyFilePath(dir) {
   return filePath;
 }
 
+
 var app = express();
 // gzip压缩
 app.use(compression({ level: 6, filter: shouldCompress }));
@@ -393,18 +305,38 @@ function shouldCompress(req, res) {
   // fallback to standard filter function
   return compression.filter(req, res);
 }
-
-app.use(
-  session({
-    secret: 'secret',
-    name: `connect.${Math.random()}`,
-    resave: true,
-    saveUninitialized: true,
-  })
-);
+/**
+ * 随机字符串
+ * @param {number} [length=6]
+ * @return {*}
+ */
+function randPhoneId() {
+  return Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10) +
+      Math.random().toString(36).slice(2, 10);
+}
+app.use(session({
+  secret: 'secret',
+  name: `connect.${Math.random()}`,
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ttyd proxy
+//app.use('/shell', createProxyMiddleware({
+//    target: 'http://localhost:7681',
+//    ws: true,
+//    changeOrigin: true,
+//    pathRewrite: {
+//        '^/shell': '/',
+//    },
+//}));
+
 
 /**
  * 登录页面
@@ -439,6 +371,7 @@ app.get('/terminal', function (request, response) {
   }
 });
 
+
 /**
  * 获取二维码链接
  */
@@ -452,7 +385,7 @@ app.get('/qrcode', function (request, response) {
         if (qrurl != 0) {
           response.send({ err: 0, qrcode: qrurl });
         } else {
-          response.send({ err: 1, msg: '错误' });
+          response.send({ err: 1, msg: "错误" });
         }
       } catch (err) {
         response.send({ err: 1, msg: err });
@@ -461,14 +394,14 @@ app.get('/qrcode', function (request, response) {
   } else {
     response.send({ err: 1, msg: loginFaild });
   }
-});
+})
 
 /**
  * 获取返回的cookie信息
  */
 
 app.get('/cookie', function (request, response) {
-  if (request.session.loggedin && cookies != '') {
+  if (request.session.loggedin && cookies != "") {
     (async () => {
       try {
         const cookie = await checkLogin();
@@ -485,7 +418,7 @@ app.get('/cookie', function (request, response) {
   } else {
     response.send({ err: 1, msg: loginFaild });
   }
-});
+})
 
 /**
  * 获取各种配置文件api
@@ -511,21 +444,18 @@ app.get('/api/config/:key', function (request, response) {
         case 'diy':
           content = getFileContentByName(diyFile);
           break;
-        case 'bot':
-          content = getFileContentByName(botFile);
-          break;
         default:
           break;
       }
-      response.setHeader('Content-Type', 'text/plain');
+      response.setHeader("Content-Type", "text/plain");
       response.send(content);
     } else {
-      response.send('no config');
+      response.send("no config");
     }
   } else {
     response.send(loginFaild);
   }
-});
+})
 
 /**
  * 首页 配置页面
@@ -536,6 +466,7 @@ app.get('/home', function (request, response) {
   } else {
     response.redirect('/');
   }
+
 });
 
 /**
@@ -547,6 +478,7 @@ app.get('/diff', function (request, response) {
   } else {
     response.redirect('/');
   }
+
 });
 
 /**
@@ -558,6 +490,7 @@ app.get('/shareCode', function (request, response) {
   } else {
     response.redirect('/');
   }
+
 });
 
 /**
@@ -569,6 +502,7 @@ app.get('/crontab', function (request, response) {
   } else {
     response.redirect('/');
   }
+
 });
 
 /**
@@ -580,17 +514,7 @@ app.get('/diy', function (request, response) {
   } else {
     response.redirect('/');
   }
-});
 
-/**
- * Bot 页面
- */
-app.get('/bot', function (request, response) {
-  if (request.session.loggedin) {
-    response.sendFile(path.join(__dirname + '/public/bot.html'));
-  } else {
-    response.redirect('/');
-  }
 });
 
 /**
@@ -604,7 +528,7 @@ app.get('/run', function (request, response) {
   }
 });
 
-app.post('/runCmd', function (request, response) {
+app.post('/runCmd', function(request, response) {
   if (request.session.loggedin) {
     const cmd = `cd ${rootPath};` + request.body.cmd;
     const delay = request.body.delay || 0;
@@ -616,17 +540,16 @@ app.post('/runCmd', function (request, response) {
       setTimeout(() => {
         if (error) {
           console.error(`执行的错误: ${error}`);
-          response.send({
-            err: 1,
-            msg: stdout ? `${stdout}${error}` : `${error}`,
-          });
+          response.send({ err: 1, msg: stdout ? `${stdout}${error}` : `${error}` });
           return;
+
         }
 
         if (stdout) {
           // console.log(`stdout: ${stdout}`)
           response.send({ err: 0, msg: `${stdout}` });
           return;
+
         }
 
         if (stderr) {
@@ -649,24 +572,23 @@ app.post('/runCmd', function (request, response) {
 app.get('/runLog/:jsName', function (request, response) {
   if (request.session.loggedin) {
     const jsName = request.params.jsName;
-    let shareCodeFile = getLastModifyFilePath(
-      path.join(rootPath, `log/${jsName}/`)
-    );
+    let shareCodeFile = getLastModifyFilePath(path.join(rootPath, `log/${jsName}/`));
     if (jsName === 'rm_log') {
-      shareCodeFile = path.join(rootPath, `log/${jsName}.log`);
+      shareCodeFile = path.join(rootPath, `log/${jsName}.log`)
     }
 
     if (shareCodeFile) {
       const content = getFileContentByName(shareCodeFile);
-      response.setHeader('Content-Type', 'text/plain');
+      response.setHeader("Content-Type", "text/plain");
       response.send(content);
     } else {
-      response.send('no logs');
+      response.send("no logs");
     }
   } else {
     response.send(loginFaild);
   }
-});
+})
+
 
 /**
  * auth
@@ -686,9 +608,10 @@ app.post('/auth', function (request, response) {
         response.send({ err: 1, msg: authError });
       }
     } else {
-      response.send({ err: 1, msg: '请输入用户名密码!' });
+      response.send({ err: 1, msg: "请输入用户名密码!" });
     }
   });
+
 });
 
 /**
@@ -700,21 +623,23 @@ app.post('/changepass', function (request, response) {
     let password = request.body.password;
     let config = {
       user: username,
-      password: password,
-    };
+      password: password
+    }
     if (username && password) {
       fs.writeFile(authConfigFile, JSON.stringify(config), function (err) {
         if (err) {
-          response.send({ err: 1, msg: '写入错误请重试!' });
+          response.send({ err: 1, msg: "写入错误请重试!" });
         } else {
-          response.send({ err: 0, msg: '更新成功!' });
+          response.send({ err: 0, msg: "更新成功!" });
         }
       });
     } else {
-      response.send({ err: 1, msg: '请输入用户名密码!' });
+      response.send({ err: 1, msg: "请输入用户名密码!" });
     }
+
   } else {
     response.send(loginFaild);
+
   }
 });
 
@@ -722,8 +647,9 @@ app.post('/changepass', function (request, response) {
  * change pwd
  */
 app.get('/logout', function (request, response) {
-  request.session.destroy();
+  request.session.destroy()
   response.redirect('/');
+
 });
 
 /**
@@ -735,14 +661,11 @@ app.post('/api/save', function (request, response) {
     let postContent = request.body.content;
     let postfile = request.body.name;
     saveNewConf(postfile, postContent);
-    response.send({
-      err: 0,
-      title: '保存成功! ',
-      msg: '将自动刷新页面查看修改后的 ' + postfile + ' 文件',
-    });
+    response.send({ err: 0, title: "保存成功! ", msg: "将自动刷新页面查看修改后的 " + postfile + " 文件" });
   } else {
-    response.send({ err: 1, title: '保存失败! ', msg: loginFaild });
+    response.send({ err: 1, title: "保存失败! ", msg: loginFaild });
   }
+
 });
 
 /**
@@ -772,8 +695,8 @@ app.get('/api/logs', function (request, response) {
         fileListTmp.reverse();
         var dirMap = {
           dirName: fileList[i],
-          files: fileListTmp,
-        };
+          files: fileListTmp
+        }
         dirs.push(dirMap);
       } else {
         rootFiles.push(fileList[i]);
@@ -782,13 +705,15 @@ app.get('/api/logs', function (request, response) {
 
     dirs.push({
       dirName: '@',
-      files: rootFiles,
+      files: rootFiles
     });
     var result = { dirs };
     response.send(result);
+
   } else {
     response.redirect('/');
   }
+
 });
 
 /**
@@ -803,12 +728,14 @@ app.get('/api/logs/:dir/:file', function (request, response) {
       filePath = logPath + request.params.dir + '/' + request.params.file;
     }
     var content = getFileContentByName(filePath);
-    response.setHeader('Content-Type', 'text/plain');
+    response.setHeader("Content-Type", "text/plain");
     response.send(content);
   } else {
     response.redirect('/');
   }
+
 });
+
 
 /**
  * 查看脚本 页面
@@ -834,10 +761,7 @@ app.get('/api/scripts', function (request, response) {
       var stat = fs.lstatSync(ScriptsPath + fileList[i]);
       // 是目录，需要继续
       if (stat.isDirectory()) {
-        var fileListTmp = fs.readdirSync(
-          ScriptsPath + '/' + fileList[i],
-          'utf-8'
-        );
+        var fileListTmp = fs.readdirSync(ScriptsPath + '/' + fileList[i], 'utf-8');
         fileListTmp.reverse();
 
         if (excludeRegExp.test(fileList[i])) {
@@ -846,8 +770,8 @@ app.get('/api/scripts', function (request, response) {
 
         var dirMap = {
           dirName: fileList[i],
-          files: fileListTmp,
-        };
+          files: fileListTmp
+        }
         dirs.push(dirMap);
       } else {
         if (excludeRegExp.test(fileList[i])) {
@@ -860,13 +784,15 @@ app.get('/api/scripts', function (request, response) {
 
     dirs.push({
       dirName: '@',
-      files: rootFiles,
+      files: rootFiles
     });
     var result = { dirs };
     response.send(result);
+
   } else {
     response.redirect('/');
   }
+
 });
 
 /**
@@ -881,15 +807,16 @@ app.get('/api/scripts/:dir/:file', function (request, response) {
       filePath = ScriptsPath + request.params.dir + '/' + request.params.file;
     }
     var content = getFileContentByName(filePath);
-    response.setHeader('Content-Type', 'text/plain');
+    response.setHeader("Content-Type", "text/plain");
     response.send(content);
   } else {
     response.redirect('/');
   }
+
 });
 
 /**
- * 更新已经存在的Cookie & 自动添加新Cookie
+ * 更新已经存在的Cookie
  * */
 app.post('/updateCookie', function (request, response) {
   if (request.body.cookie) {
@@ -919,20 +846,20 @@ app.post('/updateCookie', function (request, response) {
         }
       }
     }
-    if (!updateFlag) {
-      const newLine = `Cookie${Number(maxCookieCount) + 1}="${cookie}" ${msg}`;
-      lines.splice(lastIndex + 1, 0, newLine);
-    }
+    // if (!updateFlag) {
+    //   const newLine = `Cookie${Number(maxCookieCount) + 1}="${cookie}" ${msg}`;
+    //   lines.splice(lastIndex + 1, 0, newLine);
+    // }
     saveNewConf('config.sh', lines.join('\n'));
     response.send({
       err: 0,
-      msg: updateFlag ? `Cookie更新成功，当前京东账号数量：${Number(maxCookieCount)}个` : `Cookie新增成功，当前京东账号数量：${Number(maxCookieCount) + 1}个`,
+      msg:updateFlag ? '更新成功' : '没有此CK，请联系管理员添加',
     });
   } else {
     response.send({ msg: '参数错误', err: -1 });
   }
 });
-checkConfigFile();
+checkConfigFile()
 
 app.listen(5678, () => {
   console.log('应用正在监听 5678 端口!');

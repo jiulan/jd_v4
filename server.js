@@ -812,7 +812,27 @@ app.get('/api/scripts/:dir/:file', function (request, response) {
   } else {
     response.redirect('/');
   }
+});
 
+/**
+ * 脚本文件
+ */
+app.post('/api/scripts/:dir/:file', function (request, response) {
+  if (request.session.loggedin) {
+    let filePath;
+    if (request.params.dir === '@') {
+      filePath = ScriptsPath + request.params.file;
+    } else {
+      filePath = ScriptsPath + request.params.dir + '/' + request.params.file;
+    }
+    updateFlag = fs.writeFileSync(filePath,request.body.content)
+    response.send({
+      err: 0,
+      msg: '更新成功',
+    });
+  } else {
+    response.redirect('/');
+  }
 });
 
 /**

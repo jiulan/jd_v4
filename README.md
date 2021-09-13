@@ -199,8 +199,6 @@ wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/
 
    [食用方法](./update_ck_number.md)
 
-+  获取京东cookie：
-   [支持扫码、直接登录](http://help.lianggenming.link)
 
 # 页面访问
 

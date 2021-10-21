@@ -65,11 +65,7 @@ sudo yum remove docker docker-common docker-selinux docker-engine
 ```
 ## 安装过docker 忽略--------------------------↑↑↑↑↑↑↑↑↑↑↑↑↑↑-------------------------
 ## Docker 部署京东脚本
-# e大v4部署
 
-```
-sudo docker pull  nevinee/jd:v4
-```
 # nevinee/jd:v4 已拉取不到 可以替换备用镜像 
 
 - jiulan/jd:test nevinee/jd:v4 导出
@@ -77,7 +73,7 @@ sudo docker pull  nevinee/jd:v4
 - jiulan/jd:v4_arm64   v4重新打包 添加内置库 arm64架构  
 - jiulan/jd:v4-bot   amd64架构bot  
 - jiulan/jd:v4-bot_arm64   arm64架构bot  
-- 默认amd64架构，arm64 移步完整版本镜像 [@V4](https://hub.docker.com/r/jiulan/jd)
+- 默认amd64架构，完整版本镜像  [@V4](https://hub.docker.com/r/jiulan/jd)
 
 
 # 默认容器配置

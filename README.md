@@ -1,7 +1,7 @@
 ##有问题反馈
 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
 
-* TG群: [@platypus](https://t.me/jiulan_platypus)
+* TG群: [@platypus](https://t.me/joinchat/DrHGFt-CvcE2ZmU1)
 
 # jd_v4
 
@@ -70,10 +70,17 @@ sudo yum remove docker docker-common docker-selinux docker-engine
 ```
 sudo docker pull  nevinee/jd:v4
 ```
-# nevinee/jd:v4 拉取不到可以替换备用镜像 
+# nevinee/jd:v4 已拉取不到 可以替换备用镜像 
 
-- TAG test 为nevinee/jd:v4 导出 jiulan/jd:test
-- TAG v4重新打包 添加内置库 jiulan/jd:v4
+- jiulan/jd:test nevinee/jd:v4 导出
+- jiulan/jd:v4   v4重新打包 添加内置库 amd64架构  
+- jiulan/jd:v4_arm64   v4重新打包 添加内置库 arm64架构  
+- jiulan/jd:v4-bot   amd64架构bot  
+- jiulan/jd:v4-bot_arm64   arm64架构bot  
+- 默认amd64架构，arm64 移步完整版本镜像 [@V4](https://hub.docker.com/r/jiulan/jd)
+
+
+# 默认容器配置
 
 ```
 docker run -dit \
@@ -88,7 +95,7 @@ docker run -dit \
 --name jd \
 --hostname jd \
 --restart always \
-nevinee/jd:v4
+jiulan/jd:v4
 ```
 ## 多容器配置 - 安装过shuye等占用jd容器名或者调整目录使用-使用lxk库（已清库）
 
@@ -105,7 +112,7 @@ docker run -dit \
 --name 容器名 \
 --hostname 容器名 \
 --restart always \
-nevinee/jd:v4
+jiulan/jd:v4
 
 ```
 ## 多容器配置 - 更换默认库
@@ -126,28 +133,9 @@ docker run -dit \
 --name 容器名 \
 --hostname 容器名 \
 --restart always \
-nevinee/jd:v4
-
-```
-## 使用jiulan改动版v4  （去除ck限制、添加jiulan内置脚本库）
-
-```
-docker run -dit \
--v /jd/config:/jd/config \
--v /jd/log:/jd/log \
--v /jd/scripts:/jd/scripts \
--v /jd/own:/jd/own \
--p 5679:5678 \
--e ENABLE_HANGUP=true \
--e ENABLE_WEB_PANEL=true \
--e ENABLE_WEB_TTYD=true \
---name 容器名 \
---hostname 容器名 \
---restart always \
 jiulan/jd:v4
 
 ```
-
 
 ## v4更新脚本命令
 ```

@@ -1,17 +1,17 @@
-##有问题反馈
+## 有问题反馈
 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
 
 * TG吹水群: [@platypus](https://t.me/joinchat/DrHGFt-CvcE2ZmU1)
 
 # jd_v4
 
-###CentOS 安装 docker
-##centos8.2以下的如果部署不成功，先重置服务器，再升级一下内核就可以了
-#升级内核命令
+## #CentOS 安装 docker
+## centos8.2以下的如果部署不成功，先重置服务器，再升级一下内核就可以了
+# 升级内核命令
 ```
 sudo yum update
 ```
-##安装依赖
+## 安装依赖
 
 ```
 sudo yum install -y yum-utils device-mapper-persistent-data lvm2
@@ -20,7 +20,7 @@ wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos
 
 sudo sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
 ```
-##安装
+## 安装
 
 ```
 sudo yum makecache fast
@@ -36,8 +36,8 @@ sudo systemctl start docker
 
 sudo systemctl enable docker
 ```
-##换源
-#腾讯云用腾讯云的
+## 换源
+# 腾讯云用腾讯云的
 ```
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'

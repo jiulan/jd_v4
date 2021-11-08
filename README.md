@@ -1,7 +1,7 @@
 ##有问题反馈
 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
 
-* TG群: [@platypus](https://t.me/joinchat/DrHGFt-CvcE2ZmU1)
+* TG吹水群: [@platypus](https://t.me/joinchat/DrHGFt-CvcE2ZmU1)
 
 # jd_v4
 
@@ -192,6 +192,4 @@ wget -q https://ghproxy.com/https://raw.githubusercontent.com/jiulan/jd_v4/main/
 
 -p B:A 异端口
 
-# 联系方式
-[call](https://t.me/jiulan0111)
 

@@ -1,5 +1,5 @@
-## 有问题反馈
-在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
+## 问题反馈
+不   你没有问题
 
 * TG吹水群: [@platypus](https://t.me/joinchat/DrHGFt-CvcE2ZmU1)
 
